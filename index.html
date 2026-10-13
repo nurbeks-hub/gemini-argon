@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Gemini 4 Argon на пальцах</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;800&family=Golos+Text:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: одна колонка-лента, каждая секция = один простой вопрос; свечение аргоновой трубки как акцент */
+:root{
+  --bg:#f5f4fb; --surface:#ffffff; --fg:#17142b; --muted:#5d5878; --line:#dedbef;
+  --accent:#6b3fe0; --accent-soft:#ece6ff; --glow:#a98bff; --good:#127a52; --no:#c23b3b;
+  --display:"Unbounded",system-ui,sans-serif; --body:"Golos Text",system-ui,sans-serif; --mono:"JetBrains Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0f0d1c; --surface:#18152b; --fg:#efecff; --muted:#a49fc4; --line:#2c2846;
+  --accent:#b49bff; --accent-soft:#251f45; --glow:#8f6bff; --good:#4fd39b; --no:#ff7a7a; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f0d1c; --surface:#18152b; --fg:#efecff; --muted:#a49fc4; --line:#2c2846;
+  --accent:#b49bff; --accent-soft:#251f45; --glow:#8f6bff; --good:#4fd39b; --no:#ff7a7a; color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--body);font-size:17px;line-height:1.55;padding-inline:16px;padding-block:0 64px}
+.wrap{max-width:980px;margin:0 auto;display:flex;flex-direction:column;gap:72px}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;line-height:1.15}
+h2{font-size:clamp(24px,4vw,34px);font-weight:700}
+h3{font-size:18px;font-weight:700}
+p{margin:0}
+a{color:var(--accent)}
+a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+.lead{color:var(--muted);max-width:62ch}
+section{display:flex;flex-direction:column;gap:24px}
+
+/* hero */
+.hero{padding-top:56px;display:grid;grid-template-columns:auto 1fr;gap:32px;align-items:center}
+.tile{width:150px;aspect-ratio:1;border:2px solid var(--accent);border-radius:14px;padding:12px;display:flex;flex-direction:column;justify-content:space-between;background:var(--surface);position:relative;box-shadow:0 0 0 6px var(--accent-soft),0 0 60px -10px var(--glow);animation:hum 3.5s ease-in-out infinite}
+.tile .n{font-family:var(--mono);font-size:13px;color:var(--muted)}
+.tile .s{font-family:var(--display);font-weight:800;font-size:58px;line-height:1;color:var(--accent)}
+.tile .m{font-family:var(--mono);font-size:11px;color:var(--muted)}
+@keyframes hum{50%{box-shadow:0 0 0 6px var(--accent-soft),0 0 90px -4px var(--glow)}}
+.hero h1{font-size:clamp(30px,6vw,56px);font-weight:800}
+.hero h1 span{color:var(--accent)}
+.hero .stack{display:flex;flex-direction:column;gap:14px;min-width:0}
+.badge{align-self:flex-start;font-size:14px;font-weight:600;background:var(--accent-soft);color:var(--accent);padding:6px 12px;border-radius:99px}
+
+/* flow diagram */
+.flow{display:grid;grid-template-columns:1fr auto 1.1fr auto 1fr;gap:12px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:24px}
+.col{display:flex;flex-direction:column;gap:10px;min-width:0}
+.col .lbl{font-family:var(--mono);font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em}
+.chip{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;border:1px solid var(--line);font-weight:500;font-size:15px}
+.chip svg{flex:none}
+.chip.no{color:var(--no);border-style:dashed;text-decoration:line-through;opacity:.85}
+.arrow{color:var(--accent);font-size:28px;text-align:center}
+.brain{display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center}
+.brain canvas{width:150px;height:150px;max-width:100%}
+.brain b{font-family:var(--display);font-size:15px}
+.note{font-size:15px;color:var(--muted);border-left:3px solid var(--accent);padding-left:14px}
+
+/* skills */
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:20px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.card .ill{height:120px;border-radius:12px;background:var(--accent-soft);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.card p{color:var(--muted);font-size:15.5px}
+.card .big{font-family:var(--display);font-weight:800;font-size:28px;color:var(--accent)}
+
+/* demos */
+.demo{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:0;background:var(--surface);border:1px solid var(--line);border-radius:20px;overflow:hidden}
+.demo .pic{background:var(--accent-soft);min-height:220px;display:flex;align-items:center;justify-content:center;padding:16px}
+.demo .pic svg{width:100%;max-width:420px;height:auto}
+.demo .txt{padding:24px;display:flex;flex-direction:column;gap:10px;justify-content:center;min-width:0}
+.steps{display:flex;flex-wrap:wrap;gap:6px;font-size:13px;font-weight:600}
+.steps span{background:var(--bg);border:1px solid var(--line);padding:4px 10px;border-radius:99px}
+.steps i{font-style:normal;color:var(--accent)}
+.demos{display:flex;flex-direction:column;gap:16px}
+.who{font-size:13px;color:var(--muted)}
+
+/* bars */
+.bars{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:24px;display:flex;flex-direction:column;gap:20px}
+.bar{display:grid;grid-template-columns:minmax(0,220px) 1fr;gap:16px;align-items:center}
+.bar .k{font-weight:600;font-size:15px}
+.bar .k small{display:block;font-weight:400;color:var(--muted);font-size:13px}
+.track{height:30px;background:var(--bg);border-radius:8px;position:relative;overflow:hidden}
+.fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--glow));border-radius:8px;display:flex;align-items:center;justify-content:flex-end;padding-right:10px;color:#fff;font-family:var(--mono);font-size:13px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.fill.alt{background:var(--line);color:var(--fg)}
+.pair{display:flex;flex-direction:column;gap:6px}
+
+/* price + timeline */
+.prices{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.price{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:20px;display:flex;flex-direction:column;gap:8px}
+.price .v{font-family:var(--display);font-weight:800;font-size:30px}
+.price p{color:var(--muted);font-size:15px}
+.price.main{border:2px solid var(--accent)}
+.tl{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;position:relative}
+.tl div{padding:18px 16px 0;border-top:3px solid var(--line);position:relative;display:flex;flex-direction:column;gap:4px}
+.tl div::before{content:"";position:absolute;top:-9px;left:16px;width:15px;height:15px;border-radius:50%;background:var(--line)}
+.tl div.now{border-top-color:var(--accent)}
+.tl div.now::before{background:var(--accent);box-shadow:0 0 16px var(--glow)}
+.tl b{font-family:var(--mono);font-size:13px;color:var(--accent)}
+.tl p{font-size:15px;color:var(--muted)}
+
+.tools{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.tool{border:1px dashed var(--accent);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:4px}
+.tool b{font-family:var(--display);font-size:15px}
+.tool span{font-size:14px;color:var(--muted)}
+.src{font-size:14px;color:var(--muted);display:flex;flex-wrap:wrap;gap:8px 18px;border-top:1px solid var(--line);padding-top:20px}
+
+@media (max-width:760px){
+  .hero{grid-template-columns:1fr}
+  .tile{width:110px}.tile .s{font-size:42px}
+  .flow{grid-template-columns:1fr}
+  .arrow{transform:rotate(90deg)}
+  .grid,.prices,.tools{grid-template-columns:1fr}
+  .demo{grid-template-columns:1fr}
+  .bar{grid-template-columns:1fr;gap:6px}
+  .tl{grid-template-columns:1fr;gap:18px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+<header class="hero">
+  <div class="tile" aria-label="Аргон, элемент 18">
+    <span class="n">18</span><span class="s">Ar</span><span class="m">Gemini 4</span>
+  </div>
+  <div class="stack">
+    <span class="eyebrow">Google DeepMind · 30 сентября 2026</span>
+    <h1>Argon — это <span>мозг</span>, а&nbsp;не&nbsp;камера</h1>
+    <p class="lead">Самая умная модель Google на сегодня. Она не рисует картинки и не снимает видео. Зато смотрит, читает, думает и пишет код лучше всех у Google.</p>
+    <span class="badge">● С 13 октября открыт всем подписчикам Pro и Ultra</span>
+  </div>
+</header>
+
+<section>
+  <span class="eyebrow">Главное за 10 секунд</span>
+  <h2>Что можно дать и что получишь</h2>
+  <div class="flow">
+    <div class="col">
+      <span class="lbl">Даёшь</span>
+      <div class="chip"><svg width="20" height="20" viewBox="0 0 20 20"><path d="M4 5h12M4 10h12M4 15h8" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg>Текст</div>
+      <div class="chip"><svg width="20" height="20" viewBox="0 0 20 20"><rect x="2" y="4" width="16" height="12" rx="2" stroke="currentColor" stroke-width="2" fill="none"/><path d="M4 14l4-4 3 3 2-2 3 3" stroke="currentColor" stroke-width="2" fill="none"/></svg>Фото</div>
+      <div class="chip"><svg width="20" height="20" viewBox="0 0 20 20"><rect x="2" y="4" width="16" height="12" rx="2" stroke="currentColor" stroke-width="2" fill="none"/><path d="M8 7.5v5l4-2.5z" fill="currentColor"/></svg>Видео (даже длинное)</div>
+    </div>
+    <div class="arrow">→</div>
+    <div class="brain"><canvas id="orb" width="300" height="300" aria-hidden="true"></canvas><b>Argon думает</b></div>
+    <div class="arrow">→</div>
+    <div class="col">
+      <span class="lbl">Получаешь</span>
+      <div class="chip"><svg width="20" height="20" viewBox="0 0 20 20"><path d="M4 5h12M4 10h12M4 15h8" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg>Ответ, план, анализ</div>
+      <div class="chip"><svg width="20" height="20" viewBox="0 0 20 20"><path d="M7 5L2 10l5 5M13 5l5 5-5 5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg>Код: сайты, игры, 3D</div>
+      <div class="chip no">Картинки</div>
+      <div class="chip no">Видео</div>
+    </div>
+  </div>
+  <p class="note">Картинки и видео у Google делают другие модели: Nano Banana и Veo. Argon ими командует, как режиссёр съёмочной группой.</p>
+</section>
+
+<section>
+  <span class="eyebrow">Что он умеет</span>
+  <h2>Четыре суперсилы</h2>
+  <div class="grid">
+    <div class="card">
+      <div class="ill"><svg viewBox="0 0 240 110" width="240" height="110"><g fill="var(--accent)">
+        <rect x="20" y="30" width="24" height="70" rx="3" opacity=".9"/><rect x="48" y="22" width="22" height="78" rx="3" opacity=".7"/><rect x="74" y="34" width="26" height="66" rx="3" opacity=".9"/><rect x="104" y="18" width="20" height="82" rx="3" opacity=".6"/><rect x="128" y="28" width="26" height="72" rx="3" opacity=".85"/><rect x="158" y="24" width="22" height="76" rx="3" opacity=".7"/><rect x="184" y="32" width="26" height="68" rx="3" opacity=".9"/></g></svg></div>
+      <span class="big">1 000 000</span>
+      <h3>токенов в одном ответе</h3>
+      <p>Это примерно 7 толстых книг за раз. Раньше потолок был в 16 раз меньше. Может выдать целую программу или огромный отчёт без «продолжи».</p>
+    </div>
+    <div class="card">
+      <div class="ill"><svg viewBox="0 0 240 110" width="240" height="110"><rect x="30" y="12" width="180" height="86" rx="8" fill="var(--surface)" stroke="var(--accent)" stroke-width="2"/><g font-family="JetBrains Mono,monospace" font-size="11" fill="var(--accent)"><text x="44" y="36">fn race() {</text><text x="58" y="54">car.speed += 2.7;</text><text x="58" y="72">render(world);</text><text x="44" y="90">}</text></g></svg></div>
+      <span class="big">Код</span>
+      <h3>Пишет программы часами сам</h3>
+      <p>Берёт большую задачу, делит на шаги, проверяет себя и доделывает. Лучший у Google по программированию.</p>
+    </div>
+    <div class="card">
+      <div class="ill"><svg viewBox="0 0 240 110" width="240" height="110"><g fill="var(--accent)"><rect x="14" y="30" width="40" height="50" rx="4" opacity=".35"/><rect x="58" y="30" width="40" height="50" rx="4" opacity=".5"/><rect x="102" y="30" width="40" height="50" rx="4" opacity=".65"/><rect x="146" y="30" width="40" height="50" rx="4" opacity=".8"/><rect x="190" y="30" width="40" height="50" rx="4"/></g><circle cx="166" cy="55" r="16" fill="none" stroke="var(--fg)" stroke-width="3"/><path d="M178 67l12 12" stroke="var(--fg)" stroke-width="4" stroke-linecap="round"/></svg></div>
+      <span class="big">91.7%</span>
+      <h3>Понимает длинные видео</h3>
+      <p>Смотрит часовое видео и находит нужный момент, считает, кто что сделал. Лучший результат в мире на тесте LVBench.</p>
+    </div>
+    <div class="card">
+      <div class="ill"><svg viewBox="0 0 240 110" width="240" height="110"><path d="M120 12l44 16v28c0 26-20 40-44 46-24-6-44-20-44-46V28z" fill="var(--surface)" stroke="var(--accent)" stroke-width="3"/><path d="M102 56l12 12 24-24" stroke="var(--good)" stroke-width="5" fill="none" stroke-linecap="round"/></svg></div>
+      <span class="big">Защита</span>
+      <h3>Находит дыры во взломе и чинит</h3>
+      <p>Сам ищет уязвимости в программах, проверяет их и пишет заплатку. Поэтому первыми его получили спецы по кибербезопасности.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <span class="eyebrow">Примеры, которые показал Google</span>
+  <h2>Что на нём уже сделали</h2>
+  <p class="lead">Картинки ниже нарисованы мной как схемы. Настоящие видео-демо смотри в <a href="https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-argon/" target="_blank" rel="noopener">посте Google</a>.</p>
+  <div class="demos">
+
+    <article class="demo">
+      <div class="pic"><svg viewBox="0 0 420 200"><rect x="10" y="40" width="150" height="110" rx="10" fill="var(--surface)" stroke="var(--line)" stroke-width="2"/><rect x="30" y="100" width="110" height="10" rx="3" fill="var(--muted)"/><rect x="40" y="70" width="26" height="30" rx="3" fill="var(--accent)" opacity=".5"/><circle cx="105" cy="88" r="12" fill="var(--accent)" opacity=".7"/><text x="85" y="168" text-anchor="middle" font-size="13" fill="var(--muted)" font-family="Golos Text,sans-serif">фото стола</text><path d="M172 95h50" stroke="var(--accent)" stroke-width="3"/><path d="M216 87l10 8-10 8" fill="none" stroke="var(--accent)" stroke-width="3"/><rect x="236" y="40" width="174" height="110" rx="10" fill="var(--fg)"/><path id="trk" d="M262 120 C 262 60, 384 60, 384 95 S 300 130, 262 120" fill="none" stroke="var(--glow)" stroke-width="10" stroke-linecap="round" opacity=".45"/><rect width="16" height="10" rx="3" fill="var(--accent)"><animateMotion dur="3s" repeatCount="indefinite" rotate="auto"><mpath href="#trk"/></animateMotion></rect><text x="323" y="168" text-anchor="middle" font-size="13" fill="var(--muted)" font-family="Golos Text,sans-serif">играбельная гонка</text></svg></div>
+      <div class="txt">
+        <h3>Фото стола → гоночная игра</h3>
+        <p>Сфоткали обычный стол. Argon построил по нему мини-гонку, где машинка ездит между кружкой и клавиатурой.</p>
+        <div class="steps"><span>Argon: код игры</span><i>+</i><span>Nano Banana: текстуры</span><i>+</i><span>Gemini Omni: звук</span></div>
+      </div>
+    </article>
+
+    <article class="demo">
+      <div class="pic"><svg viewBox="0 0 420 200"><rect x="10" y="50" width="120" height="90" rx="8" fill="var(--surface)" stroke="var(--line)" stroke-width="2"/><path d="M40 125V85l30-22 30 22v40" fill="none" stroke="var(--accent)" stroke-width="3"/><path d="M62 125v-20h16v20" fill="none" stroke="var(--accent)" stroke-width="3"/><text x="70" y="160" text-anchor="middle" font-size="13" fill="var(--muted)" font-family="Golos Text,sans-serif">1 картинка</text><path d="M142 95h50" stroke="var(--accent)" stroke-width="3"/><path d="M186 87l10 8-10 8" fill="none" stroke="var(--accent)" stroke-width="3"/><g transform="translate(300 100)"><g><animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="10s" repeatCount="indefinite"/><path d="M-60 20l60 30 60-30-60-30z" fill="var(--accent)" opacity=".25"/><path d="M-30 10v-50l30-25 30 25v50l-30 15z" fill="var(--accent)" opacity=".75"/></g></g><text x="300" y="185" text-anchor="middle" font-size="13" fill="var(--muted)" font-family="Golos Text,sans-serif">готовая 3D-сцена в Blender</text></svg></div>
+      <div class="txt">
+        <h3>Одна картинка → 3D-сцена</h3>
+        <p>Дали одну готическую картинку. Argon сам управлял Blender по кругу, пока не собрал готовую 3D-сцену.</p>
+        <div class="steps"><span>Nano Banana: картинка</span><i>→</i><span>Argon + Blender</span><i>→</i><span>3D</span></div>
+      </div>
+    </article>
+
+    <article class="demo">
+      <div class="pic"><svg viewBox="0 0 420 200"><rect x="40" y="70" width="190" height="50" rx="16" fill="var(--accent)" opacity=".8"/><rect x="40" y="50" width="190" height="30" rx="12" fill="var(--accent)" opacity=".5"/><g fill="var(--fg)"><rect x="60" y="120" width="10" height="30" rx="3"><animate attributeName="height" values="30;16;30" dur="2.4s" repeatCount="indefinite"/></rect><rect x="200" y="120" width="10" height="30" rx="3"><animate attributeName="height" values="30;16;30" dur="2.4s" repeatCount="indefinite"/></rect></g><path d="M250 100h40" stroke="var(--accent)" stroke-width="3"/><path d="M284 92l10 8-10 8" fill="none" stroke="var(--accent)" stroke-width="3"/><rect x="310" y="60" width="80" height="90" rx="6" fill="var(--surface)" stroke="var(--line)" stroke-width="2"/><path d="M335 135l15-55 15 55z" fill="none" stroke="var(--accent)" stroke-width="3"/><text x="350" y="175" text-anchor="middle" font-size="13" fill="var(--muted)" font-family="Golos Text,sans-serif">файл для 3D-принтера</text></svg></div>
+      <div class="txt">
+        <h3>Новые ножки для дивана</h3>
+        <p>Argon накидал варианты дизайна ножек через Nano Banana, а потом сделал файл, который можно сразу печатать на 3D-принтере.</p>
+        <div class="steps"><span>идея</span><i>→</i><span>варианты</span><i>→</i><span>файл для печати</span></div>
+      </div>
+    </article>
+
+    <article class="demo">
+      <div class="pic"><svg viewBox="0 0 420 200"><text x="20" y="60" font-family="Unbounded,sans-serif" font-weight="800" font-size="40" fill="var(--accent)">2.7×</text><text x="20" y="84" font-size="13" fill="var(--muted)" font-family="Golos Text,sans-serif">быстрее видеодекодер</text><text x="230" y="60" font-family="Unbounded,sans-serif" font-weight="800" font-size="40" fill="var(--accent)">300</text><text x="230" y="84" font-size="13" fill="var(--muted)" font-family="Golos Text,sans-serif">ТиБ памяти освободил</text><text x="20" y="150" font-family="Unbounded,sans-serif" font-weight="800" font-size="40" fill="var(--accent)">800K</text><text x="20" y="174" font-size="13" fill="var(--muted)" font-family="Golos Text,sans-serif">строк кода переносит</text><text x="230" y="150" font-family="Unbounded,sans-serif" font-weight="800" font-size="40" fill="var(--accent)">−40%</text><text x="230" y="174" font-size="13" fill="var(--muted)" font-family="Golos Text,sans-serif">ресурсов в квантовой схеме</text></svg></div>
+      <div class="txt">
+        <h3>Работа внутри самого Google</h3>
+        <p>Агенты на Argon перевели ядро системы Fuchsia (800 тысяч строк) на другой язык, ускорили видеодекодер в 2.7 раза и нашли 300 ТиБ лишней памяти в дата-центрах Google.</p>
+        <p class="who">Ещё компания Wiz нашла с ним опасную дыру в медицинской программе, которую другие модели пропустили.</p>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<section>
+  <span class="eyebrow">Насколько он умный</span>
+  <h2>Оценки, как в школе</h2>
+  <div class="bars">
+    <div class="bar"><div class="k">Общий рейтинг Vals<small>1-е место из 47 моделей</small></div><div class="track"><div class="fill" style="width:68.9%">68.9%</div></div></div>
+    <div class="bar"><div class="k">Чинит реальный код<small>DeepSWE, рекорд по данным Google</small></div><div class="track"><div class="fill" style="width:77.9%">77.9%</div></div></div>
+    <div class="bar"><div class="k">Понимает длинные видео<small>LVBench, рекорд</small></div><div class="track"><div class="fill" style="width:91.7%">91.7%</div></div></div>
+    <div class="bar"><div class="k">Как часто врёт<small>меньше всех среди топовых</small></div><div class="track"><div class="fill" style="width:15%">15%</div></div></div>
+    <div class="bar"><div class="k">Цена той же задачи<small>такой же умный, как GPT-6 Astra</small></div>
+      <div class="pair">
+        <div class="track"><div class="fill alt" style="width:100%">GPT-6 Astra · 100%</div></div>
+        <div class="track"><div class="fill" style="width:60%">Argon · 60%</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <span class="eyebrow">Где попробовать и сколько стоит</span>
+  <h2>Три способа зайти</h2>
+  <div class="prices">
+    <div class="price main"><span class="eyebrow">Приложение Gemini</span><span class="v">$20/мес</span><p>Подписка Google AI Pro. Пишешь ему в чате, как в обычный Gemini. Ещё он есть в AI Mode в Поиске.</p></div>
+    <div class="price"><span class="eyebrow">Для профи</span><span class="v">от $100/мес</span><p>Подписка Google AI Ultra с бо́льшими лимитами.</p></div>
+    <div class="price"><span class="eyebrow">Для разработчиков</span><span class="v">$2 / $10</span><p>За миллион токенов на входе и выходе в API и в Antigravity. С 1 декабря будет вдвое дороже: $4 / $20.</p></div>
+  </div>
+  <div class="tl">
+    <div><b>30 сентября</b><p>Google показал Argon миру</p></div>
+    <div><b>Начало октября</b><p>Первыми получили спецы по безопасности (программа Fairwind)</p></div>
+    <div class="now"><b>13 октября · сегодня</b><p>Открыли в приложении, Поиске и API</p></div>
+  </div>
+</section>
+
+<section>
+  <span class="eyebrow">А если нужны картинки и видео</span>
+  <h2>Это к другим моделям</h2>
+  <div class="tools">
+    <div class="tool"><b>Nano Banana 2</b><span>картинки и правки фото</span></div>
+    <div class="tool"><b>Veo 3.1</b><span>видео по тексту и картинке</span></div>
+    <div class="tool"><b>Gemini Omni</b><span>видео со звуком</span></div>
+  </div>
+  <p class="note">Argon лучше всего работает как режиссёр: пишет план и код и командует этими моделями.</p>
+</section>
+
+<footer class="src">
+  <span>Источники:</span>
+  <a href="https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-argon/" target="_blank" rel="noopener">Google Blog</a>
+  <a href="https://www.engadget.com/2285023/google-gemini-4-argon-is-now-available-in-the-gemini-app-and-ai-mode-in-search/" target="_blank" rel="noopener">Engadget</a>
+  <a href="https://techcrunch.com/2026/09/30/google-releases-gemini-4-argon-called-its-most-powerful-model-yet/" target="_blank" rel="noopener">TechCrunch</a>
+  <a href="https://artificialanalysis.ai/articles/gemini-4-argon-google-top-three-labs" target="_blank" rel="noopener">Artificial Analysis</a>
+  <a href="https://www.vals.ai/models/google_gemini-4-argon" target="_blank" rel="noopener">Vals AI</a>
+  <a href="https://www.datacamp.com/blog/gemini-4-argon" target="_blank" rel="noopener">DataCamp</a>
+</footer>
+</div>
+
+<script>
+(function(){
+  const c=document.getElementById('orb'); if(!c) return;
+  const x=c.getContext('2d'); const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const css=getComputedStyle(document.documentElement);
+  const col=()=>css.getPropertyValue('--glow').trim()||'#8f6bff';
+  const acc=()=>css.getPropertyValue('--accent').trim()||'#6b3fe0';
+  const pts=Array.from({length:70},(_,i)=>({a:Math.random()*Math.PI*2,r:40+Math.random()*80,s:.004+Math.random()*.012,z:Math.random()}));
+  function draw(t){
+    x.clearRect(0,0,300,300);
+    const g=x.createRadialGradient(150,150,10,150,150,140);
+    g.addColorStop(0,col()); g.addColorStop(1,'rgba(0,0,0,0)');
+    x.globalAlpha=.35+.1*Math.sin(t/700); x.fillStyle=g; x.beginPath(); x.arc(150,150,140,0,7); x.fill();
+    x.globalAlpha=1; x.fillStyle=acc();
+    pts.forEach(p=>{ if(!reduce) p.a+=p.s; const px=150+Math.cos(p.a)*p.r, py=150+Math.sin(p.a)*p.r*.6;
+      x.globalAlpha=.4+.6*p.z; x.beginPath(); x.arc(px,py,1.5+2*p.z,0,7); x.fill(); });
+    x.globalAlpha=1; x.font='800 44px Unbounded, sans-serif'; x.textAlign='center'; x.textBaseline='middle'; x.fillText('Ar',150,152);
+    if(!reduce) requestAnimationFrame(draw);
+  }
+  requestAnimationFrame(draw);
+})();
+</script>
+</body>
+</html>
