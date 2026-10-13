@@ -128,6 +128,26 @@ section{display:flex;flex-direction:column;gap:24px}
 .vtxt{padding:16px 18px 20px;display:flex;flex-direction:column;gap:6px}
 .vtxt p{color:var(--muted);font-size:15px}
 @media (max-width:760px){.vgrid{grid-template-columns:1fr}}
+.crow{display:grid;grid-template-columns:minmax(0,240px) 1fr;gap:16px;align-items:center;padding-bottom:18px;border-bottom:1px solid var(--line)}
+.crow:last-child{border-bottom:0;padding-bottom:0}
+.crow .k{font-weight:600;font-size:15px;display:flex;flex-direction:column;gap:2px}
+.crow .k small{font-weight:400;color:var(--muted);font-size:13px}
+.crow .k .cnote{color:var(--accent)}
+.cbars{display:flex;flex-direction:column;gap:6px;min-width:0}
+.cm{display:grid;grid-template-columns:72px 1fr;gap:10px;align-items:center}
+.cn{font-family:var(--mono);font-size:12px;color:var(--muted)}
+.cm.win .cn{color:var(--accent);font-weight:500}
+.cbars .track{height:24px}
+.nodata{height:100%;display:flex;align-items:center;padding-left:10px;font-size:12px;color:var(--muted);border:1px dashed var(--line);border-radius:8px}
+.ctable-wrap{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:20px}
+.ctable{width:100%;border-collapse:collapse;font-size:15px;min-width:560px}
+.ctable th,.ctable td{padding:14px 16px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+.ctable tr:last-child td{border-bottom:0}
+.ctable th{font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);font-weight:500}
+.ctable td:first-child{font-weight:600;width:34%}
+.ctable small{display:block;color:var(--muted);font-size:12.5px;margin-top:2px}
+.y{color:var(--good);font-weight:600}.x{color:var(--no);font-weight:600}
+@media (max-width:760px){.crow{grid-template-columns:1fr;gap:8px}}
 </style>
 </head>
 <body>
@@ -247,6 +267,39 @@ section{display:flex;flex-direction:column;gap:24px}
       </div>
     </div>
   </div>
+</section>
+
+<section id="vs">
+  <span class="eyebrow">Argon против Claude Opus 5.5 и GPT-6 Astra</span>
+  <h2>Кто в чём сильнее</h2>
+  <p class="lead">Чем длиннее полоска, тем лучше. Лидер строки подсвечен. Где компания не публиковала результат, стоит «нет данных».</p>
+  <div class="bars">
+<div class="crow"><div class="k">Управлять компьютером сам<small>кликает, печатает, работает в программах · OSWorld 2.0</small><small class="cnote">У Opus мягкий подсчёт, по строгому 48.7%</small></div><div class="cbars"><div class="cm"><span class="cn">Argon</span><div class="track"><div class="fill alt" style="width:69.2%">69.2%</div></div></div><div class="cm win"><span class="cn">Opus 5.5</span><div class="track"><div class="fill" style="width:81.8%">81.8%</div></div></div><div class="cm"><span class="cn">Astra</span><div class="track"><div class="fill alt" style="width:72.6%">72.6%</div></div></div></div></div>
+<div class="crow"><div class="k">Автоматизировать рабочие задачи<small>цепочки действий в сервисах · AutomationBench</small></div><div class="cbars"><div class="cm win"><span class="cn">Argon</span><div class="track"><div class="fill" style="width:51.3%">51.3%</div></div></div><div class="cm"><span class="cn">Opus 5.5</span><div class="track"><div class="fill alt" style="width:40.0%">40%</div></div></div><div class="cm"><span class="cn">Astra</span><div class="track"><div class="fill alt" style="width:41.4%">41.4%</div></div></div></div></div>
+<div class="crow"><div class="k">Работать агентом в сложных задачах<small>Agent's Last Exam</small><small class="cnote">Цифры из таблицы Google</small></div><div class="cbars"><div class="cm win"><span class="cn">Argon</span><div class="track"><div class="fill" style="width:39.5%">39.5%</div></div></div><div class="cm"><span class="cn">Opus 5.5</span><div class="track"><div class="fill alt" style="width:38.2%">38.2%</div></div></div><div class="cm"><span class="cn">Astra</span><div class="track"><div class="fill alt" style="width:34.2%">34.2%</div></div></div></div></div>
+<div class="crow"><div class="k">Программировать в терминале<small>Terminal-Bench 4.0</small></div><div class="cbars"><div class="cm"><span class="cn">Argon</span><div class="track"><div class="fill alt" style="width:57.4%">57.4%</div></div></div><div class="cm win"><span class="cn">Opus 5.5</span><div class="track"><div class="fill" style="width:66.4%">66.4%</div></div></div><div class="cm"><span class="cn">Astra</span><div class="track"><div class="fill alt" style="width:57.9%">57.9%</div></div></div></div></div>
+<div class="crow"><div class="k">Самый сложный код<small>FrontierSWE v2</small></div><div class="cbars"><div class="cm"><span class="cn">Argon</span><div class="track"><div class="fill alt" style="width:55.0%">55%</div></div></div><div class="cm"><span class="cn">Opus 5.5</span><div class="track"><div class="nodata">нет данных</div></div></div><div class="cm win"><span class="cn">Astra</span><div class="track"><div class="fill" style="width:65.5%">65.5%</div></div></div></div></div>
+<div class="crow"><div class="k">Наука в терминале<small>Terminal-Bench Science 0.1</small></div><div class="cbars"><div class="cm"><span class="cn">Argon</span><div class="track"><div class="fill alt" style="width:57.6%">57.6%</div></div></div><div class="cm"><span class="cn">Opus 5.5</span><div class="track"><div class="fill alt" style="width:58.7%">58.7%</div></div></div><div class="cm win"><span class="cn">Astra</span><div class="track"><div class="fill" style="width:64.6%">64.6%</div></div></div></div></div>
+<div class="crow"><div class="k">Финансы и аналитика<small>Vals Finance Agent v2</small></div><div class="cbars"><div class="cm win"><span class="cn">Argon</span><div class="track"><div class="fill" style="width:65.4%">65.4%</div></div></div><div class="cm"><span class="cn">Opus 5.5</span><div class="track"><div class="nodata">нет данных</div></div></div><div class="cm"><span class="cn">Astra</span><div class="track"><div class="fill alt" style="width:53.5%">53.5%</div></div></div></div></div>
+<div class="crow"><div class="k">Юридическая работа<small>Harvey Legal Agent</small></div><div class="cbars"><div class="cm win"><span class="cn">Argon</span><div class="track"><div class="fill" style="width:19.6%">19.6%</div></div></div><div class="cm"><span class="cn">Opus 5.5</span><div class="track"><div class="nodata">нет данных</div></div></div><div class="cm"><span class="cn">Astra</span><div class="track"><div class="fill alt" style="width:5.4%">5.4%</div></div></div></div></div>
+<div class="crow"><div class="k">Понимать длинные видео<small>LVBench</small><small class="cnote">Опубликован только результат Argon</small></div><div class="cbars"><div class="cm win"><span class="cn">Argon</span><div class="track"><div class="fill" style="width:91.7%">91.7%</div></div></div><div class="cm"><span class="cn">Opus 5.5</span><div class="track"><div class="nodata">нет данных</div></div></div><div class="cm"><span class="cn">Astra</span><div class="track"><div class="nodata">нет данных</div></div></div></div></div>
+  </div>
+  <div class="ctable-wrap"><table class="ctable">
+    <thead><tr><th></th><th>Argon</th><th>Opus 5.5</th><th>Astra</th></tr></thead>
+    <tbody>
+      <tr><td>Своя функция управления компьютером</td><td><span class="x">нет</span><small>не заявлена</small></td><td><span class="y">да</span></td><td><span class="y">да</span></td></tr>
+      <tr><td>Рисует картинки и видео</td><td><span class="x">нет</span></td><td><span class="x">нет</span></td><td><span class="x">нет</span></td></tr>
+      <tr><td>Смотрит фото и видео</td><td><span class="y">да</span><small>лучший по длинным видео</small></td><td><span class="y">да</span><small>фото и PDF</small></td><td><span class="y">да</span></td></tr>
+      <tr><td>Самый длинный ответ за раз</td><td><b>1 млн токенов</b></td><td>128 тыс.</td><td>128 тыс.</td></tr>
+      <tr><td>Цена API за 1 млн токенов, вход / выход</td><td><b>$2 / $10</b><small>с 1 декабря $4 / $20</small></td><td>$4 / $20</td><td>$10 / $50</td></tr>
+    </tbody>
+  </table></div>
+  <div class="prices">
+    <div class="price main"><span class="eyebrow">Бери Argon</span><p>Если нужны финансы, юристы, автоматизация, разбор длинных видео и огромные ответы. И если важна цена: он самый дешёвый из трёх.</p></div>
+    <div class="price"><span class="eyebrow">Бери Opus 5.5</span><p>Если ИИ должен сам работать за компьютером и в терминале. По управлению компьютером он лучший из трёх.</p></div>
+    <div class="price"><span class="eyebrow">Бери Astra</span><p>Если задача на самый сложный код и науку. Плюс у неё уже есть готовое управление компьютером в продуктах OpenAI.</p></div>
+  </div>
+  <p class="note">Цифры в основном из таблиц самих компаний и сторонних обзоров, считали их по-разному. Это ориентир, а не точный рейтинг: перед важной задачей проверяй модели на своём примере.</p>
 </section>
 
 <section>
