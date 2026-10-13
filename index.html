@@ -116,6 +116,18 @@ section{display:flex;flex-direction:column;gap:24px}
   .tl{grid-template-columns:1fr;gap:18px}
 }
 @media (prefers-reduced-motion:reduce){*{animation:none!important}}
+.vgroup{font-size:15px;font-family:var(--mono);font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-top:12px}
+.vgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.vcard{background:var(--surface);border:1px solid var(--line);border-radius:18px;overflow:hidden;display:flex;flex-direction:column;min-width:0}
+.yt{all:unset;cursor:pointer;position:relative;display:block;aspect-ratio:16/9;background:#000}
+.yt img,.yt iframe{width:100%;height:100%;object-fit:cover;display:block;border:0}
+.yt .play{position:absolute;inset:0;margin:auto;width:68px;height:68px;border-radius:50%;background:var(--accent);box-shadow:0 0 30px var(--glow);transition:transform .2s}
+.yt .play::after{content:"";position:absolute;left:27px;top:21px;border-left:20px solid #fff;border-top:13px solid transparent;border-bottom:13px solid transparent}
+.yt:hover .play{transform:scale(1.1)}
+.yt:focus-visible{outline:3px solid var(--accent);outline-offset:-3px}
+.vtxt{padding:16px 18px 20px;display:flex;flex-direction:column;gap:6px}
+.vtxt p{color:var(--muted);font-size:15px}
+@media (max-width:760px){.vgrid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -193,46 +205,31 @@ section{display:flex;flex-direction:column;gap:24px}
 <section>
   <span class="eyebrow">Примеры, которые показал Google</span>
   <h2>Что на нём уже сделали</h2>
-  <p class="lead">Картинки ниже нарисованы мной как схемы. Настоящие видео-демо смотри в <a href="https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-argon/" target="_blank" rel="noopener">посте Google</a>.</p>
-  <div class="demos">
-
-    <article class="demo">
-      <div class="pic"><svg viewBox="0 0 420 200"><rect x="10" y="40" width="150" height="110" rx="10" fill="var(--surface)" stroke="var(--line)" stroke-width="2"/><rect x="30" y="100" width="110" height="10" rx="3" fill="var(--muted)"/><rect x="40" y="70" width="26" height="30" rx="3" fill="var(--accent)" opacity=".5"/><circle cx="105" cy="88" r="12" fill="var(--accent)" opacity=".7"/><text x="85" y="168" text-anchor="middle" font-size="13" fill="var(--muted)" font-family="Golos Text,sans-serif">фото стола</text><path d="M172 95h50" stroke="var(--accent)" stroke-width="3"/><path d="M216 87l10 8-10 8" fill="none" stroke="var(--accent)" stroke-width="3"/><rect x="236" y="40" width="174" height="110" rx="10" fill="var(--fg)"/><path id="trk" d="M262 120 C 262 60, 384 60, 384 95 S 300 130, 262 120" fill="none" stroke="var(--glow)" stroke-width="10" stroke-linecap="round" opacity=".45"/><rect width="16" height="10" rx="3" fill="var(--accent)"><animateMotion dur="3s" repeatCount="indefinite" rotate="auto"><mpath href="#trk"/></animateMotion></rect><text x="323" y="168" text-anchor="middle" font-size="13" fill="var(--muted)" font-family="Golos Text,sans-serif">играбельная гонка</text></svg></div>
-      <div class="txt">
-        <h3>Фото стола → гоночная игра</h3>
-        <p>Сфоткали обычный стол. Argon построил по нему мини-гонку, где машинка ездит между кружкой и клавиатурой.</p>
-        <div class="steps"><span>Argon: код игры</span><i>+</i><span>Nano Banana: текстуры</span><i>+</i><span>Gemini Omni: звук</span></div>
-      </div>
-    </article>
-
-    <article class="demo">
-      <div class="pic"><svg viewBox="0 0 420 200"><rect x="10" y="50" width="120" height="90" rx="8" fill="var(--surface)" stroke="var(--line)" stroke-width="2"/><path d="M40 125V85l30-22 30 22v40" fill="none" stroke="var(--accent)" stroke-width="3"/><path d="M62 125v-20h16v20" fill="none" stroke="var(--accent)" stroke-width="3"/><text x="70" y="160" text-anchor="middle" font-size="13" fill="var(--muted)" font-family="Golos Text,sans-serif">1 картинка</text><path d="M142 95h50" stroke="var(--accent)" stroke-width="3"/><path d="M186 87l10 8-10 8" fill="none" stroke="var(--accent)" stroke-width="3"/><g transform="translate(300 100)"><g><animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="10s" repeatCount="indefinite"/><path d="M-60 20l60 30 60-30-60-30z" fill="var(--accent)" opacity=".25"/><path d="M-30 10v-50l30-25 30 25v50l-30 15z" fill="var(--accent)" opacity=".75"/></g></g><text x="300" y="185" text-anchor="middle" font-size="13" fill="var(--muted)" font-family="Golos Text,sans-serif">готовая 3D-сцена в Blender</text></svg></div>
-      <div class="txt">
-        <h3>Одна картинка → 3D-сцена</h3>
-        <p>Дали одну готическую картинку. Argon сам управлял Blender по кругу, пока не собрал готовую 3D-сцену.</p>
-        <div class="steps"><span>Nano Banana: картинка</span><i>→</i><span>Argon + Blender</span><i>→</i><span>3D</span></div>
-      </div>
-    </article>
-
-    <article class="demo">
-      <div class="pic"><svg viewBox="0 0 420 200"><rect x="40" y="70" width="190" height="50" rx="16" fill="var(--accent)" opacity=".8"/><rect x="40" y="50" width="190" height="30" rx="12" fill="var(--accent)" opacity=".5"/><g fill="var(--fg)"><rect x="60" y="120" width="10" height="30" rx="3"><animate attributeName="height" values="30;16;30" dur="2.4s" repeatCount="indefinite"/></rect><rect x="200" y="120" width="10" height="30" rx="3"><animate attributeName="height" values="30;16;30" dur="2.4s" repeatCount="indefinite"/></rect></g><path d="M250 100h40" stroke="var(--accent)" stroke-width="3"/><path d="M284 92l10 8-10 8" fill="none" stroke="var(--accent)" stroke-width="3"/><rect x="310" y="60" width="80" height="90" rx="6" fill="var(--surface)" stroke="var(--line)" stroke-width="2"/><path d="M335 135l15-55 15 55z" fill="none" stroke="var(--accent)" stroke-width="3"/><text x="350" y="175" text-anchor="middle" font-size="13" fill="var(--muted)" font-family="Golos Text,sans-serif">файл для 3D-принтера</text></svg></div>
-      <div class="txt">
-        <h3>Новые ножки для дивана</h3>
-        <p>Argon накидал варианты дизайна ножек через Nano Banana, а потом сделал файл, который можно сразу печатать на 3D-принтере.</p>
-        <div class="steps"><span>идея</span><i>→</i><span>варианты</span><i>→</i><span>файл для печати</span></div>
-      </div>
-    </article>
-
-    <article class="demo">
-      <div class="pic"><svg viewBox="0 0 420 200"><text x="20" y="60" font-family="Unbounded,sans-serif" font-weight="800" font-size="40" fill="var(--accent)">2.7×</text><text x="20" y="84" font-size="13" fill="var(--muted)" font-family="Golos Text,sans-serif">быстрее видеодекодер</text><text x="230" y="60" font-family="Unbounded,sans-serif" font-weight="800" font-size="40" fill="var(--accent)">300</text><text x="230" y="84" font-size="13" fill="var(--muted)" font-family="Golos Text,sans-serif">ТиБ памяти освободил</text><text x="20" y="150" font-family="Unbounded,sans-serif" font-weight="800" font-size="40" fill="var(--accent)">800K</text><text x="20" y="174" font-size="13" fill="var(--muted)" font-family="Golos Text,sans-serif">строк кода переносит</text><text x="230" y="150" font-family="Unbounded,sans-serif" font-weight="800" font-size="40" fill="var(--accent)">−40%</text><text x="230" y="174" font-size="13" fill="var(--muted)" font-family="Golos Text,sans-serif">ресурсов в квантовой схеме</text></svg></div>
-      <div class="txt">
-        <h3>Работа внутри самого Google</h3>
-        <p>Агенты на Argon перевели ядро системы Fuchsia (800 тысяч строк) на другой язык, ускорили видеодекодер в 2.7 раза и нашли 300 ТиБ лишней памяти в дата-центрах Google.</p>
-        <p class="who">Ещё компания Wiz нашла с ним опасную дыру в медицинской программе, которую другие модели пропустили.</p>
-      </div>
-    </article>
-
-  </div>
+  <p class="lead">13 настоящих роликов из анонса Google. Жми на любой, он запустится прямо здесь.</p>
+<div class="demos">
+<h3 class="vgroup">Творчество и 3D</h3>
+<div class="vgrid">
+<article class="vcard"><button class="yt" data-id="zvoNbz_0q3k" aria-label="Смотреть: Фото стола → гоночная игра"><img loading="lazy" src="https://i.ytimg.com/vi/zvoNbz_0q3k/hqdefault.jpg" alt=""><span class="play"></span></button><div class="vtxt"><h3>Фото стола → гоночная игра</h3><p>Сфоткали обычный стол, Argon сам сделал из него играбельную мини-гонку.</p></div></article>
+<article class="vcard"><button class="yt" data-id="uht7LT3LrQk" aria-label="Смотреть: Одна картинка → готический собор"><img loading="lazy" src="https://i.ytimg.com/vi/uht7LT3LrQk/hqdefault.jpg" alt=""><span class="play"></span></button><div class="vtxt"><h3>Одна картинка → готический собор</h3><p>Из одной картинки Nano Banana сам собрал 3D-сцену в Blender со светом под музыку.</p></div></article>
+<article class="vcard"><button class="yt" data-id="WwDApkotwy0" aria-label="Смотреть: Пагода в Blender"><img loading="lazy" src="https://i.ytimg.com/vi/WwDApkotwy0/hqdefault.jpg" alt=""><span class="play"></span></button><div class="vtxt"><h3>Пагода в Blender</h3><p>Сам вылепил целый храмовый комплекс с деревьями и реалистичным светом.</p></div></article>
+<article class="vcard"><button class="yt" data-id="LJJ3zXx-ptU" aria-label="Смотреть: 3D-шахматы"><img loading="lazy" src="https://i.ytimg.com/vi/LJJ3zXx-ptU/hqdefault.jpg" alt=""><span class="play"></span></button><div class="vtxt"><h3>3D-шахматы</h3><p>Слепил, заригал и анимировал фигуры, потом запустил игру прямо в браузере.</p></div></article>
+<article class="vcard"><button class="yt" data-id="h2Dk1TlEX-U" aria-label="Смотреть: 3D на чистом Python"><img loading="lazy" src="https://i.ytimg.com/vi/h2Dk1TlEX-U/hqdefault.jpg" alt=""><span class="play"></span></button><div class="vtxt"><h3>3D на чистом Python</h3><p>Написал свой движок графики, видео и звука с нуля, без библиотек, и построил солнечную библиотеку.</p></div></article>
+<article class="vcard"><button class="yt" data-id="0_47R0ep-6s" aria-label="Смотреть: Новые ножки для дивана"><img loading="lazy" src="https://i.ytimg.com/vi/0_47R0ep-6s/hqdefault.jpg" alt=""><span class="play"></span></button><div class="vtxt"><h3>Новые ножки для дивана</h3><p>От наброска с размерами до готового файла для 3D-принтера.</p></div></article>
+</div>
+<h3 class="vgroup">Наука и обучение</h3>
+<div class="vgrid">
+<article class="vcard"><button class="yt" data-id="Ah5nPftN8QU" aria-label="Смотреть: Анатомия человека"><img loading="lazy" src="https://i.ytimg.com/vi/Ah5nPftN8QU/hqdefault.jpg" alt=""><span class="play"></span></button><div class="vtxt"><h3>Анатомия человека</h3><p>Собрал интерактивный 3D-атлас тела: снимаешь слои, смотришь, как двигаются мышцы.</p></div></article>
+<article class="vcard"><button class="yt" data-id="q2gcdeZsXpM" aria-label="Смотреть: Древние руины"><img loading="lazy" src="https://i.ytimg.com/vi/q2gcdeZsXpM/hqdefault.jpg" alt=""><span class="play"></span></button><div class="vtxt"><h3>Древние руины</h3><p>Из 50 ГБ сканов и чертежей восстановил 3D-модели древнего каньона Чако.</p></div></article>
+<article class="vcard"><button class="yt" data-id="9jQA7IgPhBE" aria-label="Смотреть: Патенты на 500 страниц"><img loading="lazy" src="https://i.ytimg.com/vi/9jQA7IgPhBE/hqdefault.jpg" alt=""><span class="play"></span></button><div class="vtxt"><h3>Патенты на 500 страниц</h3><p>Учёные Isomorphic Labs разбирают с ним химические патенты, чтобы быстрее искать лекарства.</p></div></article>
+<article class="vcard"><button class="yt" data-id="9PICEmtfpWU" aria-label="Смотреть: Робот учится по видео"><img loading="lazy" src="https://i.ytimg.com/vi/9PICEmtfpWU/hqdefault.jpg" alt=""><span class="play"></span></button><div class="vtxt"><h3>Робот учится по видео</h3><p>Посмотрел, как человек кидает мешочки, и научил робота: 7 попаданий подряд.</p></div></article>
+</div>
+<h3 class="vgroup">Работа и безопасность</h3>
+<div class="vgrid">
+<article class="vcard"><button class="yt" data-id="frgCYZ_TEwY" aria-label="Смотреть: Папка файлов → презентация"><img loading="lazy" src="https://i.ytimg.com/vi/frgCYZ_TEwY/hqdefault.jpg" alt=""><span class="play"></span></button><div class="vtxt"><h3>Папка файлов → презентация</h3><p>Из кучи разрозненных файлов сделал аккуратную презу для клиента и письмо к ней.</p></div></article>
+<article class="vcard"><button class="yt" data-id="LVEfFyijQ2c" aria-label="Смотреть: Код браузера Chrome"><img loading="lazy" src="https://i.ytimg.com/vi/LVEfFyijQ2c/hqdefault.jpg" alt=""><span class="play"></span></button><div class="vtxt"><h3>Код браузера Chrome</h3><p>Переделал сотни файлов кода Chrome: месяцы работы за недели.</p></div></article>
+<article class="vcard"><button class="yt" data-id="ftkic7Tdpcg" aria-label="Смотреть: Защита от хакеров (Wiz)"><img loading="lazy" src="https://i.ytimg.com/vi/ftkic7Tdpcg/hqdefault.jpg" alt=""><span class="play"></span></button><div class="vtxt"><h3>Защита от хакеров (Wiz)</h3><p>Нашёл дыру, через которую можно было достать сотни тысяч медкарт пациентов, и помог её закрыть.</p></div></article>
+</div>
+</div>
 </section>
 
 <section>
@@ -310,6 +307,14 @@ section{display:flex;flex-direction:column;gap:24px}
   }
   requestAnimationFrame(draw);
 })();
+</script>
+<script>
+document.querySelectorAll('.yt').forEach(b=>b.addEventListener('click',()=>{
+  const f=document.createElement('iframe');
+  f.src='https://www.youtube-nocookie.com/embed/'+b.dataset.id+'?autoplay=1&rel=0';
+  f.allow='autoplay; encrypted-media; picture-in-picture; fullscreen'; f.allowFullscreen=true; f.title=b.getAttribute('aria-label');
+  const d=document.createElement('div');d.className='yt';d.appendChild(f);b.replaceWith(d);
+},{once:true}));
 </script>
 </body>
 </html>
